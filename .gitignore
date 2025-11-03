@@ -1,0 +1,16 @@
+# ROS2 build artifacts
+build/
+install/
+log/
+
+# Python caches
+*.pyc
+*.pyo
+__pycache__/
+
+# VS Code files
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
