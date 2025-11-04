@@ -5,23 +5,20 @@ from ament_index_python.packages import get_package_share_directory
 import os
 
 def generate_launch_description():
-    # Absolute path to your URDF
-    pkg_path = get_package_share_directory('cypher_description')
-    urdf_file = os.path.join(pkg_path, 'urdf', 'cypher_body.urdf')
+    pkg_path = get_package_share_directory('cypher_v0')
+    urdf_file = os.path.join(pkg_path, 'cypher_description', 'urdf', 'cypher_body.urdf')
 
-    # Read URDF contents
     with open(urdf_file, 'r') as infp:
         robot_desc = infp.read()
 
     return LaunchDescription([
-        # Launch Ignition Gazebo (Fortress)
+        # Launch Ignition Gazebo Fortress with empty world
         ExecuteProcess(
-            cmd=['ign', 'gazebo', '-r', '-v', '4', 'empty.sdf'],
-  # verbose logging
+            cmd=['ign', 'gazebo', '-v', '4', '-r', 'empty.sdf'],
             output='screen'
         ),
 
-        # Publish robot_state
+        # robot_state_publisher
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
@@ -30,7 +27,7 @@ def generate_launch_description():
             parameters=[{'robot_description': robot_desc, 'use_sim_time': True}]
         ),
 
-        # Spawn the robot in Ignition Gazebo
+        # Spawn robot
         Node(
             package='ros_ign_gazebo',
             executable='create',
